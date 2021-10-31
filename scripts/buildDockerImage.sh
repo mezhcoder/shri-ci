@@ -2,7 +2,9 @@
 
 docker pull ubuntu
 
-echo "$VERSION"
+echo "$VERSION" >> "$LOG_PATH"
+
+VERSION=$(git describe --abbrev=0 --tags)
 
 docker build -t app:"$VERSION" .
 

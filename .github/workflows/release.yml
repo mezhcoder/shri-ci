@@ -21,10 +21,6 @@ jobs:
           echo "prepare_log_path=./logs/prepre.txt" >> $GITHUB_ENV
           echo "build_log_path=./logs/build.txt" >> $GITHUB_ENV
 
-      - name: Create directory for logs
-        run: |
-          mkdir ./logs
-
       - name: Run preparebuild
         run: |
           sh ./scripts/prepareBuild.sh
@@ -39,7 +35,6 @@ jobs:
 
       - name: Build
         run: |
-          echo "$VERSION"
           sh ./scripts/buildDockerImage.sh
         env:
           VERSION: ${{ github.version }}
