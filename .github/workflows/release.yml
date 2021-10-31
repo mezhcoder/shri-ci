@@ -1,0 +1,18 @@
+name: Run release scripts
+on:
+  push:
+    tags:
+      - '*'
+jobs:
+  Explore-GitHub-Actions:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v2
+      - name: Run preparebuild
+        run: sh ./scripts/preparebuild.sh
+        env:
+          REPO: ${{ github.repository }}
+          X_ORG_ID: ${{ secrets.X_ORG_ID }}
+          OAUTH_TOKEN: ${{ secrets.OAUTH_TOKEN }}
+
