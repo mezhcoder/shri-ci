@@ -36,7 +36,7 @@ FOUND_TASKS=$(curl  -H "Authorization: OAuth $OAUTH_TOKEN" -H "X-Org-ID: $X_ORG_
 if [ "$FOUND_TASKS" != "[]" ]; then
   echo "$FOUND_TASKS" | python3 -c "import sys, json; print(json.load(sys.stdin)[0])" >> releaseIssue.json
 
-  TASK_KEY=$(node -e "const issue = require('releaseIssue.json'); console.log(issue['key'])")
+  TASK_KEY=$(node -e "const issue = require('./releaseIssue.json'); console.log(issue['key'])")
 
   # TASK_ID=$(node -e "const issues = require('releaseIssue.json'); console.log(issues[0]['id'])");
 
