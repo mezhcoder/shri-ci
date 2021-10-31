@@ -1,9 +1,5 @@
 #! /usr/bin/env bash
 
-git fetch --all --tags
-
-git tag
-
 CURRENT_VERSION=$(git describe --abbrev=0 --tags)
 
 if [ "$?" != "0" ]; then
