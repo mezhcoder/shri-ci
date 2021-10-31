@@ -11,8 +11,7 @@ jobs:
         uses: actions/checkout@v2
       - name: Get all git tags
         run: |
-          git tag
-          # git fetch --prune --unshallow --tags
+          git fetch -f --prune --unshallow --tags
       - name: Run preparebuild
         run: sh ./scripts/preparebuild.sh
         env:
