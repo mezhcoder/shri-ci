@@ -34,7 +34,7 @@ DESCRIPTION=$(echo -e "$RELEASE_INFO\n\nCHANGELOG:\n$COMMITS_DIFF" | sed -z 's/\
 FOUND_TASKS=$(curl  -H "Authorization: OAuth $OAUTH_TOKEN" -H "X-Org-ID: $X_ORG_ID" -H 'Content-Type: application/json' --data '{"filter":{"queue": "TMP", "unique": "'"$REPO"':'"$CURRENT_VERSION"'"}}' https://api.tracker.yandex.net/v2/issues/_search)
 
 if [ "$FOUND_TASKS" != "[]" ]; then
-  echo "$FOUND_TASKS" | python3 -c "import sys, json; print(json.dumps(json.load(sys.stdin)[0]))" >> releaseIssue.json
+  echo "$FOUND_TASKS" | python3 -c "import sys, json; print(json.dumps(json.load(sys.stdin, strict=False)[0]))" >> releaseIssue.json
 
   TASK_KEY=$(node -e "const issue = require('./releaseIssue.json'); console.log(issue['key'])")
 
