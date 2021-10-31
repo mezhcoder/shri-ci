@@ -11,24 +11,22 @@ jobs:
       - name: Check out repository
         uses: actions/checkout@v2
 
-      - name: Get all git tags
+      - name: Set up nodejs
+        uses: actions/setup-node@v1
+        with:
+          node-version: '12'
+
+      - name: Fetch all tags
         run: |
           git fetch -f --prune --unshallow --tags
 
-      - name: Set env variables
+      - name: Create issue
         run: |
-          echo "version=$(git describe --abbrev=0 --tags)" >> $GITHUB_ENV
-          echo "prepare_log_path=./logs/prepare.txt" >> $GITHUB_ENV
-          echo "build_log_path=./logs/build.txt" >> $GITHUB_ENV
-
-      - name: Run preparebuild
-        run: |
-          sh ./scripts/prepareBuild.sh
+          sh ./scripts/createIssue.sh
         env:
           REPO: ${{ github.repository }}
           X_ORG_ID: ${{ secrets.X_ORG_ID }}
           OAUTH_TOKEN: ${{ secrets.OAUTH_TOKEN }}
-          LOG_PATH: ${{ github.prepare_log_path }}
 
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v1
@@ -37,7 +35,6 @@ jobs:
         run: |
           sh ./scripts/buildDockerImage.sh
         env:
-          VERSION: ${{ github.version }}
           LOG_PATH: ${{ github.build_log_path }}
           X_ORG_ID: ${{ secrets.X_ORG_ID }}
           OAUTH_TOKEN: ${{ secrets.OAUTH_TOKEN }}
@@ -48,10 +45,7 @@ jobs:
           name: build-log
           path: ./logs/build.txt
 
-      - name: Set up nodejs
-        uses: actions/setup-node@v1
-        with:
-          node-version: '12'
+
 
       - name: Run tests
         run: |
@@ -66,6 +60,11 @@ jobs:
       - uses: actions/upload-artifact@v2
         with:
           name: tests-results
+          path: testResults.json
+
+      - uses: actions/upload-artifact@v2
+        with:
+          name: runtests-log
           path: testResults.json
 
 

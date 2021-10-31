@@ -21,11 +21,11 @@ if [ "$FOUND_TASKS" = "[]" ]; then
   exit 1
 fi
 
-TASK_ID=$(echo "$FOUND_TASKS" | python3 -c "import sys, json; print(json.load(sys.stdin)[0]['id'])");
+TASK_KEY=$(echo "$FOUND_TASKS" | python3 -c "import sys, json; print(json.load(sys.stdin)[0]['key'])");
 
-echo "Найдена задача $TASK_ID" >> $LOG_FILE
+echo "Найдена задача $TASK_KEY" >> $LOG_FILE
 
-RESPONSE=$(curl -H "Authorization: OAuth $OAUTH_TOKEN" -H "X-Org-ID: $X_ORG_ID" -H 'Content-Type: application/json' --data '{"text": "Результат запуска тестов: '"$TESTS_RESULT"'"}' https://api.tracker.yandex.net/v2/issues/"$TASK_ID"/comments)
+RESPONSE=$(curl -H "Authorization: OAuth $OAUTH_TOKEN" -H "X-Org-ID: $X_ORG_ID" -H 'Content-Type: application/json' --data '{"text": "Результат запуска тестов: '"$TESTS_RESULT"'"}' https://api.tracker.yandex.net/v2/issues/"$TASK_KEY"/comments)
 
 HAS_ERRORS=$(echo "$RESPONSE" | python3 -c "import sys, json; print(hasattr(json.load(sys.stdin), 'errors'))");
 
@@ -36,4 +36,4 @@ if [ "$HAS_ERRORS" = "true" ]; then
   exit 1
 fi
 
-echo "Создан комментарий в задаче $TASK_ID" >> $LOG_FILE
+echo "Создан комментарий в задаче $TASK_KEY" >> $LOG_FILE

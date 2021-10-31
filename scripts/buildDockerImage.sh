@@ -27,11 +27,13 @@ if [ "$FOUND_TASKS" = "[]" ]; then
   exit 1
 fi
 
-TASK_ID=$(echo "$FOUND_TASKS" | python3 -c "import sys, json; print(json.load(sys.stdin)[0]['id'])");
+echo "Найдена задача $FOUND_TASKS" >> $LOG_PATH
 
-echo "Найдена задача $TASK_ID" >> $LOG_PATH
+TASK_KEY=$(echo "$FOUND_TASKS" | python3 -c "import sys, json; print(json.load(sys.stdin)[0]['key'])");
 
-RESPONSE=$(curl -H "Authorization: OAuth $OAUTH_TOKEN" -H "X-Org-ID: $X_ORG_ID" -H 'Content-Type: application/json' --data '{"text": "Собран контейнер '"$BUILD_NAME"'"}' https://api.tracker.yandex.net/v2/issues/"$TASK_ID"/comments)
+echo "Найдена задача $TASK_KEY" >> $LOG_PATH
+
+RESPONSE=$(curl -H "Authorization: OAuth $OAUTH_TOKEN" -H "X-Org-ID: $X_ORG_ID" -H 'Content-Type: application/json' --data '{"text": "Собран контейнер '"$BUILD_NAME"'"}' https://api.tracker.yandex.net/v2/issues/"$TASK_KEY"/comments)
 
 HAS_ERRORS=$(echo "$RESPONSE" | python3 -c "import sys, json; print(hasattr(json.load(sys.stdin), 'errors'))");
 
