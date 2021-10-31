@@ -1,6 +1,6 @@
 #! /usr/bin/env bash
 
-LOG_PATH=./logs/build.txt
+LOG_PATH=buildLog.log
 
 docker pull ubuntu
 
@@ -29,7 +29,8 @@ fi
 
 echo "Найдена задача $FOUND_TASKS" >> $LOG_PATH
 
-TASK_KEY=$(echo "$FOUND_TASKS" | python3 -c "import sys, json; print(json.load(sys.stdin)[0]['key'])");
+# TASK_KEY=$(echo "$FOUND_TASKS" | python3 -c "import sys, json; print(json.load(sys.stdin)[0]['key'])");
+TASK_KEY=$(node -e "const [issue] = require('releaseIssue.json'); console.log(issue['key'])");
 
 echo "Найдена задача $TASK_KEY" >> $LOG_PATH
 

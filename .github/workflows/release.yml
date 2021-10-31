@@ -28,6 +28,16 @@ jobs:
           X_ORG_ID: ${{ secrets.X_ORG_ID }}
           OAUTH_TOKEN: ${{ secrets.OAUTH_TOKEN }}
 
+      - uses: actions/upload-artifact@v2
+        with:
+          name: create-issue-log
+          path: createIssue.log
+
+      - uses: actions/upload-artifact@v2
+        with:
+          name: release-issue
+          path: releaseIssue.json
+
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v1
 
@@ -35,7 +45,6 @@ jobs:
         run: |
           sh ./scripts/buildDockerImage.sh
         env:
-          LOG_PATH: ${{ github.build_log_path }}
           X_ORG_ID: ${{ secrets.X_ORG_ID }}
           OAUTH_TOKEN: ${{ secrets.OAUTH_TOKEN }}
           REPO: ${{ github.repository }}
@@ -43,16 +52,13 @@ jobs:
       - uses: actions/upload-artifact@v2
         with:
           name: build-log
-          path: ./logs/build.txt
-
-
+          path: buildLog.log
 
       - name: Run tests
         run: |
           npm ci
           sh ./scripts/runTests.sh
         env:
-          VERSION: ${{ github.version }}
           X_ORG_ID: ${{ secrets.X_ORG_ID }}
           OAUTH_TOKEN: ${{ secrets.OAUTH_TOKEN }}
           REPO: ${{ github.repository }}
@@ -64,7 +70,7 @@ jobs:
 
       - uses: actions/upload-artifact@v2
         with:
-          name: runtests-log
-          path: testResults.json
+          name: run-tests-log
+          path: runTestsLog.log
 
 
