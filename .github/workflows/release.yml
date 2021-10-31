@@ -48,18 +48,22 @@ jobs:
           name: build-log
           path: ./logs/build.txt
 
+      - name: Run tests
+        uses: actions/setup-node@v1
+        with:
+          node-version: '12'
+        run: |
+          npm ci
+          sh ./scripts/runTests.sh
+        env:
+          VERSION: ${{ github.version }}
+          X_ORG_ID: ${{ secrets.X_ORG_ID }}
+          OAUTH_TOKEN: ${{ secrets.OAUTH_TOKEN }}
+          REPO: ${{ github.repository }}
 
-  # build:
-  #   runs-on: ubuntu-latest
-  #   steps:
+      - uses: actions/upload-artifact@v2
+        with:
+          name: tests-results
+          path: testResults.json
 
-  #     - name: Check Out Repo
-  #       uses: actions/checkout@v2
-
-  #     - name: setup-docker
-  #       uses: docker-practice/actions-setup-docker@1.0.8
-
-  #     - name: Build
-  #       run:
-  #         sh ./scripts/buildDockerImage.sh
 
