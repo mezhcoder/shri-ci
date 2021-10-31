@@ -48,10 +48,12 @@ jobs:
           name: build-log
           path: ./logs/build.txt
 
-      - name: Run tests
+      - name: Set up nodejs
         uses: actions/setup-node@v1
         with:
           node-version: '12'
+
+      - name: Run tests
         run: |
           npm ci
           sh ./scripts/runTests.sh
