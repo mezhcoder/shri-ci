@@ -43,7 +43,7 @@ jobs:
       - uses: actions/upload-artifact@v2
         with:
           name: build-log
-          path: ${{ github.build_log_path }}
+          path: ./logs/build.txt
 
 
   # build:
