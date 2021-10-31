@@ -39,6 +39,9 @@ jobs:
         env:
           VERSION: ${{ github.version }}
           LOG_PATH: ${{ github.build_log_path }}
+          X_ORG_ID: ${{ secrets.X_ORG_ID }}
+          OAUTH_TOKEN: ${{ secrets.OAUTH_TOKEN }}
+          REPO: ${{ github.repository }}
 
       - uses: actions/upload-artifact@v2
         with:
