@@ -3,3 +3,4 @@ dist
 NOTES.md
 .dockerignore
 .DS_Store
+.idea
