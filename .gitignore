@@ -2,3 +2,4 @@ node_modules
 dist
 NOTES.md
 .dockerignore
+.DS_Store
