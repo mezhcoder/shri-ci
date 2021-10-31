@@ -4,15 +4,25 @@ CURRENT_VERSION=$(git describe --abbrev=0 --tags)
 
 if [ "$?" != "0" ]; then
   echo "Не удалось найти последний тег в репозитории"
-  exit 0
+  exit 1
 fi
 
 echo "Найден последний тег $CURRENT_VERSION"
 
 PREV_VERSION=$(git describe --abbrev=0 --tags "$(git rev-list --tags --skip=1 --max-count=1)")
 
+if [ "$?" != "0" ]; then
+  echo "Не удалось найти предпоследний тег в репозитории"
+  exit 1
+fi
+
 # find commits for changelog
 COMMITS_DIFF=$(git log --pretty=format:"%h %s" "$PREV_VERSION".."$CURRENT_VERSION")
+
+if [ "$?" != "0" ]; then
+  echo "Не удалось сформировать changelog"
+  exit 1
+fi
 
 RELEASE_INFO=$(git for-each-ref --format 'Версия: %(refname:strip=2)%0aАвтор релиза: %(taggername)%0aВремя релиза: %(taggerdate)' refs/tags/"$CURRENT_VERSION")
 
