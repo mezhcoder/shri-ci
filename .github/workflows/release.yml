@@ -9,10 +9,10 @@ jobs:
     steps:
       - name: Check out repository
         uses: actions/checkout@v2
-      - name: Run preparebuild
-        run: sh ./scripts/preparebuild.sh
       - name: Get all git tags
         run: git fetch --prune --unshallow --tags
+      - name: Run preparebuild
+        run: sh ./scripts/preparebuild.sh
         env:
           REPO: ${{ github.repository }}
           X_ORG_ID: ${{ secrets.X_ORG_ID }}
