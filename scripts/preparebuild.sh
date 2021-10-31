@@ -9,7 +9,7 @@ fi
 
 echo "Найден последний тег $CURRENT_VERSION"
 
-PREV_VERSION=$(git describe --abbrev=0 --tags "$(git rev-list --tags --skip=1 --max-count=1)")
+PREV_VERSION=$(git describe --abbrev=0 --tags "$CURRENT_VERSION"^)
 
 if [ "$?" != "0" ]; then
   echo "Не удалось найти предпоследний тег в репозитории"
