@@ -4,18 +4,60 @@ on:
     tags:
       - '*'
 jobs:
-  Explore-GitHub-Actions:
+  build:
     runs-on: ubuntu-latest
     steps:
+
       - name: Check out repository
         uses: actions/checkout@v2
+
       - name: Get all git tags
         run: |
           git fetch -f --prune --unshallow --tags
+
+      - name: Set env variables
+        run: |
+          VERSION=$(git describe --abbrev=0 --tags)
+          echo "verion=$VERSION" >> $GITHUB_ENV
+          echo "prepare_log_path=./logs/prepre.txt" >> $GITHUB_ENV
+          echo "build_log_path=./logs/build.txt" >> $GITHUB_ENV
+
       - name: Run preparebuild
-        run: sh ./scripts/preparebuild.sh
+        run: |
+          sh ./scripts/prepareBuild.sh
         env:
           REPO: ${{ github.repository }}
           X_ORG_ID: ${{ secrets.X_ORG_ID }}
           OAUTH_TOKEN: ${{ secrets.OAUTH_TOKEN }}
+          LOG_PATH: ${{ github.prepare_log_path }}
+
+      - name: Setup docker
+        uses: docker-practice/actions-setup-docker@1.0.8
+
+      - name: Build
+        run: |
+          sh ./scripts/buildDockerImage.sh
+        env:
+          VERSION: ${{ github.version }}
+          LOG_PATH: ${{ github.build_log_path }}
+
+      - uses: actions/upload-artifact@v2
+        with:
+          name: my-artifact
+          path: path/to/artifact/world.txt
+
+
+  # build:
+  #   runs-on: ubuntu-latest
+  #   steps:
+
+  #     - name: Check Out Repo
+  #       uses: actions/checkout@v2
+
+  #     - name: setup-docker
+  #       uses: docker-practice/actions-setup-docker@1.0.8
+
+  #     - name: Build
+  #       run:
+  #         sh ./scripts/buildDockerImage.sh
 
