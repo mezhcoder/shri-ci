@@ -60,6 +60,9 @@ fi
 
 echo "creating a new task"
 
-RESPONSE=$(curl  -H "Authorization: OAuth $OAUTH_TOKEN" -H "X-Org-ID: $X_ORG_ID" -H 'Content-Type: application/json' --data '{"queue": "TMP", "summary": "Release '"$CURRENT_VERSION"'", "unique": "'"$REPO"':'"$CURRENT_VERSION"'", "description": "'"$DESCRIPTION"'"}' https://api.tracker.yandex.net/v2/issues/)
+curl  -H "Authorization: OAuth $OAUTH_TOKEN" -H "X-Org-ID: $X_ORG_ID" -H 'Content-Type: application/json' --data '{"queue": "TMP", "summary": "Release '"$CURRENT_VERSION"'", "unique": "'"$REPO"':'"$CURRENT_VERSION"'", "description": "'"$DESCRIPTION"'"}' https://api.tracker.yandex.net/v2/issues/ >> releaseIssue.json
 
-echo "Создана новая задача в очереди TMP" >> $LOG_FILE
+TASK_KEY=$(node -e "const [issue] = require('releaseIssue.json'); console.log(issue['key'])")
+
+echo "Создана задача $TASK_KEY в очереди TMP" >> $LOG_FILE
+echo "Информация о задаче записана в releaseIssue.json" >> $LOG_FILE
