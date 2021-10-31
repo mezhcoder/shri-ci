@@ -9,7 +9,7 @@ if [ "$?" != 0 ]; then
   exit 1
 fi
 
-TESTS_RESULT=$(node -e "const result = requre('testResults.json'); console.log(result.success ? 'Success' : 'Fail')")
+TESTS_RESULT=$(node -e "const result = require('testResults.json'); console.log(result.success ? 'Success' : 'Fail')")
 
 # seach an existing task for current version
 echo "Запрос на поиск задач в трекере по полю unique=$REPO:$VERSION" >> $LOG_FILE
