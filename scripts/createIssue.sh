@@ -46,7 +46,7 @@ if [ "$FOUND_TASKS" != "[]" ]; then
 
   UPDATE_RESPONSE=$(curl --request PATCH -H "Authorization: OAuth $OAUTH_TOKEN" -H "X-Org-ID: $X_ORG_ID" -H 'Content-Type: application/json' --data '{"description": "'"$DESCRIPTION"'"}' https://api.tracker.yandex.net/v2/issues/"$TASK_KEY")
 
-  UPDATE_ERRORS=$(node -e "const issues = require('releaseIssue.json'); console.log(issues[0]['id'])");
+  UPDATE_ERRORS=$(node -e "const issues = require('./releaseIssue.json'); console.log(issues[0]['id'])");
 
   if [ "$?" != "0" ]; then
     echo "Не удалось обновить задачу" >> $LOG_FILE
@@ -63,7 +63,7 @@ echo "creating a new task"
 
 curl  -H "Authorization: OAuth $OAUTH_TOKEN" -H "X-Org-ID: $X_ORG_ID" -H 'Content-Type: application/json' --data '{"queue": "TMP", "summary": "Release '"$CURRENT_VERSION"'", "unique": "'"$REPO"':'"$CURRENT_VERSION"'", "description": "'"$DESCRIPTION"'"}' https://api.tracker.yandex.net/v2/issues/ >> releaseIssue.json
 
-TASK_KEY=$(node -e "const issue = require('releaseIssue.json'); console.log(issue['key'])")
+TASK_KEY=$(node -e "const issue = require('./releaseIssue.json'); console.log(issue['key'])")
 
 echo "Создана задача $TASK_KEY в очереди TMP" >> $LOG_FILE
 echo "Информация о задаче записана в releaseIssue.json" >> $LOG_FILE

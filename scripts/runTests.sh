@@ -22,7 +22,7 @@ if [ "$FOUND_TASKS" = "[]" ]; then
 fi
 
 # TASK_KEY=$(echo "$FOUND_TASKS" | python3 -c "import sys, json; print(json.load(sys.stdin)[0]['key'])")
-TASK_KEY=$(node -e "const issue = require('releaseIssue.json'); console.log(issue['key'])")
+TASK_KEY=$(node -e "const issue = require('./releaseIssue.json'); console.log(issue['key'])")
 
 echo "Найдена задача $TASK_KEY" >> $LOG_FILE
 
