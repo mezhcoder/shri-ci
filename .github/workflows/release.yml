@@ -36,6 +36,7 @@ jobs:
 
       - name: Build
         run: |
+          echo "$VERSION"
           sh ./scripts/buildDockerImage.sh
         env:
           VERSION: ${{ github.version }}
@@ -43,8 +44,8 @@ jobs:
 
       - uses: actions/upload-artifact@v2
         with:
-          name: my-artifact
-          path: path/to/artifact/world.txt
+          name: build-log
+          path: ${{ github.build_log_path }}
 
 
   # build:
