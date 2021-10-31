@@ -1,5 +1,7 @@
 #! /usr/bin/env bash
 
+LOG_PATH=./logs/build.txt
+
 docker pull ubuntu
 
 echo "$VERSION" >> "$LOG_PATH"

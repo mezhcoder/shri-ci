@@ -18,7 +18,7 @@ jobs:
       - name: Set env variables
         run: |
           echo "version=$(git describe --abbrev=0 --tags)" >> $GITHUB_ENV
-          echo "prepare_log_path=./logs/prepre.txt" >> $GITHUB_ENV
+          echo "prepare_log_path=./logs/prepare.txt" >> $GITHUB_ENV
           echo "build_log_path=./logs/build.txt" >> $GITHUB_ENV
 
       - name: Run preparebuild
@@ -30,8 +30,8 @@ jobs:
           OAUTH_TOKEN: ${{ secrets.OAUTH_TOKEN }}
           LOG_PATH: ${{ github.prepare_log_path }}
 
-      - name: Setup docker
-        uses: docker-practice/actions-setup-docker@1.0.8
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v1
 
       - name: Build
         run: |
