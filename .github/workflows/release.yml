@@ -18,7 +18,7 @@ jobs:
       - name: Set env variables
         run: |
           VERSION=$(git describe --abbrev=0 --tags)
-          echo "verion=$VERSION" >> $GITHUB_ENV
+          echo "version=$VERSION" >> $GITHUB_ENV
           echo "prepare_log_path=./logs/prepre.txt" >> $GITHUB_ENV
           echo "build_log_path=./logs/build.txt" >> $GITHUB_ENV
 
