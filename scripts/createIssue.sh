@@ -26,7 +26,7 @@ if [ "$?" != "0" ]; then
   exit 1
 fi
 
-RELEASE_INFO=$(git for-each-ref --format 'Версия: %(refname:strip=2)%0aАвтор релиза: %(taggername)%0aВремя релиза: %(taggerdate)' refs/tags/"$CURRENT_VERSION")
+RELEASE_INFO=$(git for-each-ref --format 'Версия: %(refname:strip=2)%0aАвтор релиза: %(taggername)%(authorname)%0aВремя релиза: %(taggerdate)%(authordate)' refs/tags/"$CURRENT_VERSION")
 
 DESCRIPTION=$(echo -e "$RELEASE_INFO\n\nCHANGELOG:\n$COMMITS_DIFF" | sed -z 's/\n/\\n/g')
 
